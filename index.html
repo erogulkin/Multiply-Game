@@ -1556,6 +1556,11 @@
       }
 
       renderMenu() {
+        const ach = this.getAchievements();
+        const maxScoreHtml = this.stats.totalScore > 0
+          ? `<div class="max-score">🏆 Всего очков: ${this.stats.totalScore} | Игр: ${this.stats.totalGames}</div>`
+          : '';
+
         const greetingHtml = `
           <div class="player-greeting">
             👋 Привет, ${this.playerName}!
