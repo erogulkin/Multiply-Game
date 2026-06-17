@@ -1291,9 +1291,7 @@
           this.generateOptions(correctAnswer);
         }
 
-        if (this.currentQuestion > 0) {
-          this.startTimer();
-        }
+        
 
         this.render('game');
       }
@@ -1324,12 +1322,25 @@
         if (this.timerInterval) clearInterval(this.timerInterval);
         this.timerInterval = setInterval(() => {
           this.timeLeft -= 1;
-          this.render('game');
+          this.updateTimerDisplay();
           if (this.timeLeft <= 0) {
             clearInterval(this.timerInterval);
             this.handleTimeUp();
           }
         }, 1000);
+      }
+
+      updateTimerDisplay() {
+        const timerText = document.querySelector('.timer-text');
+        const timerFill = document.querySelector('.timer-bar-fill');
+        if (!timerText || !timerFill) return;
+        timerText.textContent = this.timeLeft + 's';
+        timerFill.style.width = (this.timeLeft / this.gameConfig.timeLimit) * 100 + '%';
+        if (this.timeLeft <= 3 && this.timeLeft > 0) {
+          timerFill.classList.add('warning');
+        } else {
+          timerFill.classList.remove('warning');
+        }
       }
 
       recordAnswer(table, isCorrect) {
