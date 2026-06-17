@@ -440,11 +440,6 @@
       transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    .option-btn:hover:not(:disabled) {
-      border-color: #667eea;
-      background: #f0f4ff;
-    }
-
     .option-btn:disabled {
       cursor: not-allowed;
     }
@@ -459,6 +454,13 @@
       background: #ff6b6b;
       color: white;
       border-color: #ff6b6b;
+    }
+
+    @media (hover: hover) {
+      .option-btn:hover:not(:disabled) {
+        border-color: #667eea;
+        background: #f0f4ff;
+      }
     }
 
     .input-mode {
