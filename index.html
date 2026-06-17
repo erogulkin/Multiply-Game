@@ -1064,16 +1064,18 @@
       // === PLAYER NAME ===
 
       savePlayerName() {
+        console.log('🔄 savePlayerName called');
         const input = document.querySelector('.name-input');
+        if (!input) { console.error('❌ input not found'); return; }
         const name = input.value.trim();
-        if (!name) return;
+        console.log('📝 name:', name);
+        if (!name) { console.log('⚠️ empty name, ignoring'); return; }
         this.playerName = name;
-        localStorage.setItem('playerName', name);
-        if (this.stats.lastGame) {
-          this.render('summary');
-        } else {
-          this.render('menu');
-        }
+        try {
+          localStorage.setItem('playerName', name);
+        } catch(e) { console.error('localStorage error:', e); }
+        console.log('✅ name saved, rendering menu');
+        this.render('menu');
       }
 
       editName() {
@@ -1548,7 +1550,7 @@
       attachNameListeners() {
         const input = document.querySelector('.name-input');
         const btn = document.querySelector('.name-submit-btn');
-        input.addEventListener('keypress', (e) => {
+        input.addEventListener('keydown', (e) => {
           if (e.key === 'Enter') this.savePlayerName();
         });
         btn.addEventListener('click', () => this.savePlayerName());
