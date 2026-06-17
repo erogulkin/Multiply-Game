@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Таблица" />
+  <meta name="theme-color" content="#667eea" />
+  <title>Таблица умножения - Игра для детей</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .app {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .menu {
+      width: 100%;
+      max-width: 600px;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .menu-content {
+      background: white;
+      border-radius: 30px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      width: 100%;
+    }
+
+    .menu-content h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
+      color: #667eea;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .subtitle {
+      font-size: 20px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .achievements-bar {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .achievement-item {
+      background: linear-gradient(135deg, #fff8e1 0%, #ffe082 100%);
+      border-radius: 15px;
+      padding: 10px 18px;
+      font-size: 28px;
+      font-weight: bold;
+      box-shadow: 0 3px 10px rgba(255, 193, 7, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .achievement-item .ach-count {
+      font-size: 22px;
+      color: #f57f17;
+    }
+
+    .achievement-item.zero {
+      opacity: 0.35;
+      filter: grayscale(0.8);
+    }
+
+    .max-score {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+      padding: 15px 20px;
+      border-radius: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .menu-nav {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .stats-btn {
+      flex: 1;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .stats-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .section {
+      margin-bottom: 25px;
+      text-align: left;
+    }
+
+    .section h2 {
+      font-size: 22px;
+      color: #333;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .table-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .table-btn {
+      padding: 15px;
+      font-size: 24px;
+      font-weight: bold;
+      border: 3px solid #667eea;
+      border-radius: 15px;
+      background: white;
+      color: #667eea;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .table-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .table-btn.selected {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .timer-section {
+      margin-bottom: 25px;
+      text-align: left;
+    }
+
+    .timer-section h2 {
+      font-size: 22px;
+      color: #333;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .timer-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .timer-btn {
+      padding: 15px;
+      font-size: 24px;
+      font-weight: bold;
+      border: 3px solid #667eea;
+      border-radius: 15px;
+      background: white;
+      color: #667eea;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .timer-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .timer-btn.selected {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .mode-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .mode-btn {
+      padding: 20px;
+      border: 3px solid #ddd;
+      border-radius: 15px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .mode-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .mode-btn.selected {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      border-color: transparent;
+      color: white;
+    }
+
+    .mode-emoji {
+      font-size: 32px;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .mode-text {
+      font-size: 18px;
+      font-weight: bold;
+      color: inherit;
+      display: block;
+    }
+
+    .mode-desc {
+      font-size: 14px;
+      color: #999;
+      margin-top: 5px;
+      display: block;
+    }
+
+    .mode-btn.selected .mode-desc {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .start-btn {
+      width: 100%;
+      padding: 18px;
+      font-size: 24px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 20px;
+    }
+
+    .start-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(245, 87, 108, 0.4);
+    }
+
+    .random-btn {
+      width: 100%;
+      padding: 18px;
+      font-size: 24px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 10px;
+    }
+
+    .random-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(17, 153, 142, 0.4);
+    }
+
+    .reset-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 14px;
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+      margin-top: 10px;
+    }
+
+    .reset-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+    }
+
+    .game-screen {
+      width: 100%;
+      max-width: 600px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      padding: 15px 20px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .game-info {
+      color: #667eea;
+    }
+
+    .game-score {
+      color: #f5576c;
+    }
+
+    .exit-btn {
+      padding: 8px 16px;
+      font-size: 18px;
+      font-weight: bold;
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .exit-btn:hover {
+      background: #e85555;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+    }
+
+    .timer-display {
+      text-align: center;
+    }
+
+    .timer-text {
+      font-size: 28px;
+      font-weight: bold;
+      color: #667eea;
+      margin-bottom: 10px;
+    }
+
+    .timer-bar {
+      background: #e0e0e0;
+      border-radius: 10px;
+      height: 20px;
+      overflow: hidden;
+      border: 2px solid #ddd;
+    }
+
+    .timer-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+      transition: width 0.1s linear;
+    }
+
+    .timer-bar-fill.warning {
+      background: linear-gradient(90deg, #ff9800 0%, #ff6b6b 100%);
+    }
+
+    .question-card {
+      background: white;
+      border-radius: 25px;
+      padding: 40px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    .question-text {
+      font-size: 64px;
+      font-weight: bold;
+      color: #667eea;
+      margin-bottom: 30px;
+      letter-spacing: 5px;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .option-btn {
+      padding: 30px;
+      font-size: 28px;
+      font-weight: bold;
+      border: 3px solid #ddd;
+      border-radius: 15px;
+      background: white;
+      color: #333;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .option-btn:disabled {
+      cursor: not-allowed;
+    }
+
+    .option-btn.correct {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+    }
+
+    .option-btn.incorrect {
+      background: #ff6b6b;
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+    }
+
+    .input-mode {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .answer-input {
+      padding: 20px;
+      font-size: 32px;
+      text-align: center;
+      border: 3px solid #ddd;
+      border-radius: 15px;
+      font-weight: bold;
+    }
+
+    .answer-input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+    }
+
+    .answer-input:disabled {
+      background: #f5f5f5;
+      cursor: not-allowed;
+    }
+
+    .submit-btn {
+      padding: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .feedback {
+      font-size: 24px;
+      font-weight: bold;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 15px;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    .feedback.correct {
+      background: #c3fad8;
+      color: #2d6a4f;
+    }
+
+    .feedback.incorrect {
+      background: #ffd8d8;
+      color: #8b0000;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .progress-bar {
+      background: white;
+      border-radius: 15px;
+      height: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+      transition: width 0.3s ease;
+    }
+
+    .result-screen,
+    .stats-screen,
+    .summary-screen {
+      width: 100%;
+      max-width: 500px;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .result-content,
+    .stats-content,
+    .summary-content {
+      background: white;
+      border-radius: 30px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      width: 100%;
+    }
+
+    .result-title {
+      font-size: 52px;
+      margin-bottom: 30px;
+      animation: bounce 0.6s ease-out;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .result-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .stat {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 15px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    .result-bar {
+      background: #e0e0e0;
+      border-radius: 12px;
+      height: 25px;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+
+    .result-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+      border-radius: 12px;
+      transition: width 0.5s ease;
+    }
+
+    .play-again-btn {
+      width: 100%;
+      padding: 18px;
+      font-size: 24px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .play-again-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    /* === Player Name Display === */
+    .player-greeting {
+      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+      border-radius: 15px;
+      padding: 15px 20px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #444;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .player-greeting .edit-name-btn {
+      font-size: 14px;
+      padding: 4px 12px;
+      background: rgba(102, 126, 234, 0.2);
+      color: #667eea;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+
+    .player-greeting .edit-name-btn:hover {
+      background: #667eea;
+      color: white;
+    }
+
+    /* === Name Input Screen === */
+    .name-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .name-content {
+      background: white;
+      border-radius: 30px;
+      padding: 50px 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .name-content h2 {
+      font-size: 32px;
+      color: #667eea;
+      margin-bottom: 15px;
+    }
+
+    .name-content p {
+      font-size: 18px;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .name-input {
+      width: 100%;
+      padding: 18px;
+      font-size: 24px;
+      text-align: center;
+      border: 3px solid #ddd;
+      border-radius: 15px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+    }
+
+    .name-input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+    }
+
+    /* === Stats Screen === */
+    .stats-content h2 {
+      font-size: 32px;
+      color: #667eea;
+      margin-bottom: 25px;
+    }
+
+    .stats-overview {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    .stats-overview .stat {
+      padding: 15px;
+    }
+
+    .stats-overview .stat-value {
+      font-size: 26px;
+    }
+
+    .stats-overview .stat-label {
+      font-size: 13px;
+    }
+
+    .table-stats {
+      margin-bottom: 25px;
+      text-align: left;
+    }
+
+    .table-stats h3 {
+      font-size: 20px;
+      color: #333;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .table-stat-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .table-stat-label {
+      font-size: 18px;
+      font-weight: bold;
+      color: #667eea;
+      min-width: 45px;
+    }
+
+    .table-stat-bar {
+      flex: 1;
+      background: #e0e0e0;
+      border-radius: 10px;
+      height: 24px;
+      overflow: hidden;
+    }
+
+    .table-stat-fill {
+      height: 100%;
+      border-radius: 10px;
+      transition: width 0.5s ease;
+    }
+
+    .table-stat-percent {
+      font-size: 15px;
+      font-weight: bold;
+      min-width: 55px;
+      text-align: right;
+    }
+
+    .stats-achievements {
+      margin-bottom: 25px;
+    }
+
+    .stats-achievements h3 {
+      font-size: 20px;
+      color: #333;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .stats-ach-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .back-btn {
+      width: 100%;
+      padding: 15px;
+      font-size: 20px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .back-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    /* === Summary Screen === */
+    .summary-content h2 {
+      font-size: 30px;
+      color: #667eea;
+      margin-bottom: 20px;
+    }
+
+    .summary-score {
+      font-size: 48px;
+      font-weight: bold;
+      color: #f5576c;
+      margin-bottom: 5px;
+    }
+
+    .summary-accuracy {
+      font-size: 20px;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .summary-section {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .summary-section h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .summary-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .tag.strong {
+      background: #c3fad8;
+      color: #2d6a4f;
+    }
+
+    .tag.weak {
+      background: #ffd8d8;
+      color: #c0392b;
+    }
+
+    .summary-tip {
+      background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+      border-radius: 15px;
+      padding: 15px;
+      font-size: 17px;
+      color: #1565c0;
+      margin-bottom: 25px;
+    }
+
+    .summary-btn {
+      width: 100%;
+      padding: 18px;
+      font-size: 24px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .summary-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    /* === Achievement Popup === */
+    .achievement-popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .achievement-popup.show {
+      display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .achievement-card {
+      background: white;
+      border-radius: 30px;
+      padding: 40px;
+      text-align: center;
+      max-width: 350px;
+      width: 90%;
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.3); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .achievement-icon {
+      font-size: 80px;
+      margin-bottom: 15px;
+      animation: pulse 1s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    .achievement-title {
+      font-size: 26px;
+      font-weight: bold;
+      color: #f57f17;
+      margin-bottom: 10px;
+    }
+
+    .achievement-desc {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .achievement-close-btn {
+      padding: 12px 40px;
+      font-size: 18px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .achievement-close-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+    }
+
+    @media (max-width: 600px) {
+      .menu-content, .result-content, .stats-content, .summary-content {
+        padding: 30px 20px;
+      }
+
+      .menu-content h1 {
+        font-size: 36px;
+      }
+
+      .table-buttons {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .question-text {
+        font-size: 48px;
+      }
+
+      .options {
+        grid-template-columns: 1fr;
+      }
+
+      .option-btn {
+        padding: 20px;
+        font-size: 24px;
+      }
+
+      .answer-input {
+        padding: 15px;
+        font-size: 24px;
+      }
+
+      .result-stats {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .stat-value {
+        font-size: 24px;
+      }
+
+      .stats-overview {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root" class="app"></div>
+  <div id="achievement-popup" class="achievement-popup"></div>
+
+  <script>
+    class MultiplicationGame {
+      constructor() {
+        this.stats = this.loadStats();
+        this.playerName = localStorage.getItem('playerName') || '';
+        this.timeLimit = null;
+        this.timeLeft = 0;
+        this.timerInterval = null;
+        this.pendingAchievements = [];
+        this.reset();
+        if (!this.playerName) {
+          this.render('name');
+        } else if (this.stats.lastGame) {
+          this.render('summary');
+        } else {
+          this.render('menu');
+        }
+      }
+
+      // === PLAYER NAME ===
+
+      savePlayerName() {
+        const input = document.querySelector('.name-input');
+        const name = input.value.trim();
+        if (!name) return;
+        this.playerName = name;
+        localStorage.setItem('playerName', name);
+        if (this.stats.lastGame) {
+          this.render('summary');
+        } else {
+          this.render('menu');
+        }
+      }
+
+      editName() {
+        this.render('name');
+      }
+
+      // === STATS STORAGE ===
+
+      loadStats() {
+        const saved = localStorage.getItem('gameStats');
+        if (saved) {
+          try {
+            return JSON.parse(saved);
+          } catch (e) {}
+        }
+        // Migrate old maxScore
+        const oldMax = localStorage.getItem('maxScore');
+        const totalScore = oldMax ? parseInt(oldMax) : 0;
+        return {
+          totalGames: 0,
+          totalScore: totalScore,
+          bestScore: 0,
+          tables: this.getEmptyTables(),
+          lastGame: null,
+          history: [],
+        };
+      }
+
+      getEmptyTables() {
+        const t = {};
+        for (let i = 2; i <= 9; i++) {
+          t[i] = { correct: 0, total: 0 };
+        }
+        return t;
+      }
+
+      saveStats() {
+        localStorage.setItem('gameStats', JSON.stringify(this.stats));
+      }
+
+      // === ACHIEVEMENTS ===
+
+      getAchievements() {
+        const totalScore = this.stats.totalScore;
+        const rawStars = Math.floor(totalScore / 500);
+        const cups = Math.floor(rawStars / 100);
+        const remaining = rawStars % 100;
+        const diamonds = Math.floor(remaining / 10);
+        const stars = remaining % 10;
+        return { stars, diamonds, cups, rawStars };
+      }
+
+      getAchievementsHtml() {
+        const ach = this.getAchievements();
+        return `
+          <div class="achievements-bar">
+            <div class="achievement-item ${ach.stars > 0 ? '' : 'zero'}">
+              ⭐ <span class="ach-count">${ach.stars}</span>
+            </div>
+            <div class="achievement-item ${ach.diamonds > 0 ? '' : 'zero'}">
+              💎 <span class="ach-count">${ach.diamonds}</span>
+            </div>
+            <div class="achievement-item ${ach.cups > 0 ? '' : 'zero'}">
+              🏆 <span class="ach-count">${ach.cups}</span>
+            </div>
+          </div>
+        `;
+      }
+
+      // === GAME STATE ===
+
+      setTimeLimit(seconds) {
+        if (seconds === 'null') {
+          this.timeLimit = null;
+        } else {
+          this.timeLimit = parseInt(seconds);
+        }
+        this.render('menu');
+      }
+
+      resetAchievements() {
+        if (confirm('Вы уверены? Это удалит ВСЮ статистику, рекорды и ачивки!')) {
+          this.stats = {
+            totalGames: 0,
+            totalScore: 0,
+            bestScore: 0,
+            tables: this.getEmptyTables(),
+            lastGame: null,
+            history: [],
+          };
+          this.saveStats();
+          localStorage.removeItem('maxScore');
+          this.render('menu');
+        }
+      }
+
+      reset() {
+        this.screen = 'menu';
+        this.selectedTables = [];
+        this.gameMode = null;
+        this.gameConfig = null;
+        this.currentQuestion = 0;
+        this.score = 0;
+        this.correct = 0;
+        this.question = null;
+        this.options = [];
+        this.userAnswer = '';
+        this.answered = false;
+        this.feedbackMessage = '';
+        if (this.questionCount === undefined) {
+          this.questionCount = 10;
+        }
+        this.gameStats = { tables: this.getEmptyTables() };
+      }
+
+      toggleTable(num) {
+        const idx = this.selectedTables.indexOf(num);
+        if (idx > -1) {
+          this.selectedTables.splice(idx, 1);
+        } else {
+          this.selectedTables.push(num);
+        }
+        this.render('menu');
+      }
+
+      setGameMode(mode) {
+        this.gameMode = mode;
+        this.render('menu');
+      }
+
+      setQuestionCount(count) {
+        this.questionCount = count;
+        this.render('menu');
+      }
+
+      startRandomGame() {
+        this.selectedTables = [2, 3, 4, 5, 6, 7, 8, 9];
+        this.gameMode = 'choice';
+        this.startGame();
+      }
+
+      startGame() {
+        if (this.selectedTables.length === 0 || !this.gameMode) {
+          alert('Выбери таблицы и режим игры!');
+          return;
+        }
+        this.gameConfig = {
+          tables: this.selectedTables,
+          mode: this.gameMode,
+          timeLimit: this.timeLimit,
+          questionCount: this.questionCount,
+        };
+        this.currentQuestion = 0;
+        this.score = 0;
+        this.correct = 0;
+        this.answered = false;
+        this.gameStats = { tables: this.getEmptyTables() };
+        this.generateQuestion();
+        this.startTimer();
+        this.screen = 'game';
+        this.render('game');
+      }
+
+      generateQuestion() {
+        let table, num, correctAnswer;
+        do {
+          table = this.gameConfig.tables[Math.floor(Math.random() * this.gameConfig.tables.length)];
+          if (Math.random() < 0.007) {
+            num = 1;
+          } else {
+            num = Math.floor(Math.random() * 8) + 2;
+          }
+          correctAnswer = table * num;
+        } while (
+          this.question &&
+          table === this.question.a &&
+          num === this.question.b
+        );
+
+        this.question = { a: table, b: num, answer: correctAnswer };
+        this.userAnswer = '';
+        this.answered = false;
+        this.feedbackMessage = '';
+
+        if (this.gameConfig.mode === 'choice') {
+          this.generateOptions(correctAnswer);
+        }
+
+        if (this.currentQuestion > 0) {
+          this.startTimer();
+        }
+
+        this.render('game');
+      }
+
+      generateOptions(correctAnswer) {
+        const opts = [correctAnswer];
+        while (opts.length < 4) {
+          let newOption;
+          const rand = Math.random();
+          if (rand < 0.5) {
+            const offset = Math.floor(Math.random() * 5) + 1;
+            newOption = correctAnswer + (Math.random() < 0.5 ? offset : -offset);
+          } else {
+            const factor = this.question.a;
+            const wrongNum = Math.floor(Math.random() * 8) + 2;
+            newOption = factor * wrongNum;
+          }
+          if (newOption > 0 && !opts.includes(newOption)) {
+            opts.push(newOption);
+          }
+        }
+        this.options = opts.sort(() => Math.random() - 0.5);
+      }
+
+      startTimer() {
+        if (!this.gameConfig.timeLimit) return;
+        this.timeLeft = this.gameConfig.timeLimit;
+        if (this.timerInterval) clearInterval(this.timerInterval);
+        this.timerInterval = setInterval(() => {
+          this.timeLeft -= 1;
+          this.render('game');
+          if (this.timeLeft <= 0) {
+            clearInterval(this.timerInterval);
+            this.handleTimeUp();
+          }
+        }, 1000);
+      }
+
+      recordAnswer(table, isCorrect) {
+        if (!this.gameStats.tables[table]) {
+          this.gameStats.tables[table] = { correct: 0, total: 0 };
+        }
+        this.gameStats.tables[table].total++;
+        if (isCorrect) {
+          this.gameStats.tables[table].correct++;
+        }
+      }
+
+      handleTimeUp() {
+        if (this.answered) return;
+        this.answered = true;
+        this.recordAnswer(this.question.a, false);
+        this.feedbackMessage = `⏰ Время вышло! Ответ: ${this.question.answer}`;
+        this.render('game');
+        setTimeout(() => {
+          if (this.currentQuestion + 1 < this.gameConfig.questionCount) {
+            this.currentQuestion += 1;
+            this.generateQuestion();
+            this.startTimer();
+          } else {
+            this.finishGame(false);
+          }
+        }, 2000);
+      }
+
+      handleAnswerChoice(answer) {
+        if (this.answered) return;
+        if (this.timerInterval) clearInterval(this.timerInterval);
+        const isCorrect = answer === this.question.answer;
+        this.answered = true;
+        this.recordAnswer(this.question.a, isCorrect);
+        if (isCorrect) {
+          this.score += 10;
+          this.correct += 1;
+          this.feedbackMessage = '✨ Молодец! ✨';
+        } else {
+          this.feedbackMessage = `❌ Неправильно! Ответ: ${this.question.answer}`;
+        }
+        this.render('game');
+        setTimeout(() => {
+          if (this.currentQuestion + 1 < this.gameConfig.questionCount) {
+            this.currentQuestion += 1;
+            this.generateQuestion();
+            this.startTimer();
+          } else {
+            this.finishGame(isCorrect);
+          }
+        }, 2000);
+      }
+
+      handleAnswerInput() {
+        if (this.answered || !this.userAnswer) return;
+        if (this.timerInterval) clearInterval(this.timerInterval);
+        const answer = parseInt(this.userAnswer);
+        const isCorrect = answer === this.question.answer;
+        this.answered = true;
+        this.recordAnswer(this.question.a, isCorrect);
+        if (isCorrect) {
+          this.score += 10;
+          this.correct += 1;
+          this.feedbackMessage = '✨ Молодец! ✨';
+        } else {
+          this.feedbackMessage = `❌ Неправильно! Ответ: ${this.question.answer}`;
+        }
+        this.render('game');
+        setTimeout(() => {
+          if (this.currentQuestion + 1 < this.gameConfig.questionCount) {
+            this.currentQuestion += 1;
+            this.generateQuestion();
+            this.startTimer();
+          } else {
+            this.finishGame(isCorrect);
+          }
+        }, 2000);
+      }
+
+      saveGameResult() {
+        const oldAch = this.getAchievements();
+
+        this.stats.totalGames++;
+        this.stats.totalScore += this.score;
+        if (this.score > this.stats.bestScore) {
+          this.stats.bestScore = this.score;
+        }
+
+        // Merge table stats
+        for (const table in this.gameStats.tables) {
+          if (!this.stats.tables[table]) {
+            this.stats.tables[table] = { correct: 0, total: 0 };
+          }
+          this.stats.tables[table].correct += this.gameStats.tables[table].correct;
+          this.stats.tables[table].total += this.gameStats.tables[table].total;
+        }
+
+        // Save last game
+        const qCount = this.gameConfig.questionCount;
+        this.stats.lastGame = {
+          score: this.score,
+          correct: this.correct,
+          total: qCount,
+          accuracy: Math.round((this.correct / qCount) * 100),
+          tables: JSON.parse(JSON.stringify(this.gameStats.tables)),
+          date: Date.now(),
+        };
+
+        // History (keep last 5)
+        this.stats.history.unshift({
+          score: this.score,
+          correct: this.correct,
+          total: qCount,
+          accuracy: this.stats.lastGame.accuracy,
+          date: Date.now(),
+        });
+        if (this.stats.history.length > 5) {
+          this.stats.history = this.stats.history.slice(0, 5);
+        }
+
+        this.saveStats();
+
+        // Check new achievements
+        const newAch = this.getAchievements();
+        const unlocked = [];
+        if (newAch.cups > oldAch.cups) {
+          unlocked.push({ icon: '🏆', title: 'Новый кубок!', desc: 'Ты получил кубок за мастерство!' });
+        }
+        if (newAch.diamonds > oldAch.diamonds) {
+          unlocked.push({ icon: '💎', title: 'Новый алмаз!', desc: 'Блестяще! Алмаз твой!' });
+        }
+        if (newAch.stars > oldAch.stars) {
+          unlocked.push({ icon: '⭐', title: 'Новая звезда!', desc: 'Так держать! +1 звезда!' });
+        }
+        this.pendingAchievements = unlocked;
+      }
+
+      finishGame(lastAnswerCorrect) {
+        if (this.timerInterval) clearInterval(this.timerInterval);
+        this.saveGameResult();
+        this.gameConfig_copy = this.gameConfig;
+        this.gameConfig = null;
+        this.screen = 'result';
+        this.currentQuestion = 0;
+        this.render('result');
+
+        // Show achievement popup after a delay
+        if (this.pendingAchievements.length > 0) {
+          const achList = this.pendingAchievements;
+          this.pendingAchievements = [];
+          setTimeout(() => this.showAchievementPopup(achList, 0), 1500);
+        }
+      }
+
+      exitGame() {
+        if (this.timerInterval) clearInterval(this.timerInterval);
+        if (this.score > 0) {
+          this.saveGameResult();
+        }
+        const hadAchievements = this.pendingAchievements.length > 0;
+        const achList = this.pendingAchievements;
+        this.pendingAchievements = [];
+        this.reset();
+        this.render('menu');
+        if (hadAchievements) {
+          setTimeout(() => this.showAchievementPopup(achList, 0), 500);
+        }
+      }
+
+      backToMenu() {
+        this.reset();
+        this.render('menu');
+      }
+
+      showAchievementPopup(list, index) {
+        if (index >= list.length) return;
+        const ach = list[index];
+        const popup = document.getElementById('achievement-popup');
+        popup.innerHTML = `
+          <div class="achievement-card">
+            <div class="achievement-icon">${ach.icon}</div>
+            <div class="achievement-title">${ach.title}</div>
+            <div class="achievement-desc">${ach.desc}</div>
+            <button class="achievement-close-btn" id="ach-close-btn">🎉 Круто!</button>
+          </div>
+        `;
+        popup.classList.add('show');
+        document.getElementById('ach-close-btn').addEventListener('click', () => {
+          popup.classList.remove('show');
+          popup.innerHTML = '';
+          if (index + 1 < list.length) {
+            setTimeout(() => this.showAchievementPopup(list, index + 1), 300);
+          }
+        });
+      }
+
+      // === RENDERING ===
+
+      render(screen) {
+        const root = document.getElementById('root');
+        root.innerHTML = '';
+
+        if (screen === 'name') {
+          root.innerHTML = this.renderName();
+          this.attachNameListeners();
+        } else if (screen === 'menu') {
+          root.innerHTML = this.renderMenu();
+          this.attachMenuListeners();
+        } else if (screen === 'game') {
+          root.innerHTML = this.renderGame();
+          if (this.gameConfig.mode === 'input') {
+            setTimeout(() => {
+              const input = document.querySelector('.answer-input');
+              if (input) input.focus();
+            }, 0);
+          }
+          this.attachGameListeners();
+        } else if (screen === 'result') {
+          root.innerHTML = this.renderResult();
+          this.attachResultListeners();
+        } else if (screen === 'stats') {
+          root.innerHTML = this.renderStats();
+          this.attachStatsListeners();
+        } else if (screen === 'summary') {
+          root.innerHTML = this.renderSummary();
+          this.attachSummaryListeners();
+        }
+      }
+
+      renderName() {
+        const existing = this.playerName ? this.playerName : '';
+        return `
+          <div class="name-screen">
+            <div class="name-content">
+              <h2>👋 Привет!</h2>
+              <p>Как тебя зовут?</p>
+              <input type="text" class="name-input" value="${existing}" placeholder="Введи имя..." maxlength="20">
+              <button class="start-btn name-submit-btn">Поехали! 🚀</button>
+            </div>
+          </div>
+        `;
+      }
+
+      attachNameListeners() {
+        const input = document.querySelector('.name-input');
+        const btn = document.querySelector('.name-submit-btn');
+        input.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') this.savePlayerName();
+        });
+        btn.addEventListener('click', () => this.savePlayerName());
+        setTimeout(() => input.focus(), 0);
+      }
+
+      renderMenu() {
+        const greetingHtml = `
+          <div class="player-greeting">
+            👋 Привет, ${this.playerName}!
+            <button class="edit-name-btn">✏️ Изменить</button>
+          </div>
+        `;
+
+        return `
+          <div class="menu">
+            <div class="menu-content">
+              ${greetingHtml}
+              <h1>🎮 Таблица умножения</h1>
+              <p class="subtitle">Выучи быстро и весело!</p>
+              ${this.getAchievementsHtml()}
+              ${maxScoreHtml}
+
+              <div class="menu-nav">
+                <button class="stats-btn">📊 Статистика</button>
+              </div>
+
+              <div class="section">
+                <h2>Выбери таблицы:</h2>
+                <div class="table-buttons">
+                  ${[2, 3, 4, 5, 6, 7, 8, 9].map(num => `
+                    <button class="table-btn ${this.selectedTables.includes(num) ? 'selected' : ''}" data-table="${num}">
+                      ×${num}
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+
+              <div class="timer-section">
+                <h2>Время на ответ:</h2>
+                <div class="timer-buttons">
+                  <button class="timer-btn ${this.timeLimit === null ? 'selected' : ''}" data-time="null">∞</button>
+                  <button class="timer-btn ${this.timeLimit === 5 ? 'selected' : ''}" data-time="5">5s</button>
+                  <button class="timer-btn ${this.timeLimit === 10 ? 'selected' : ''}" data-time="10">10s</button>
+                  <button class="timer-btn ${this.timeLimit === 15 ? 'selected' : ''}" data-time="15">15s</button>
+                </div>
+              </div>
+
+              <div class="timer-section">
+                <h2>Количество вопросов:</h2>
+                <div class="timer-buttons">
+                  ${[10, 15, 20, 30].map(count => `
+                    <button class="timer-btn ${this.questionCount === count ? 'selected' : ''}" data-count="${count}">
+                      ${count}
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+
+              <div class="section">
+                <h2>Выбери режим:</h2>
+                <div class="mode-buttons">
+                  <button class="mode-btn ${this.gameMode === 'choice' ? 'selected' : ''}" data-mode="choice">
+                    <span class="mode-emoji">🎯</span>
+                    <span class="mode-text">Выбери ответ</span>
+                    <span class="mode-desc">Выбери правильный ответ из 4 вариантов</span>
+                  </button>
+                  <button class="mode-btn ${this.gameMode === 'input' ? 'selected' : ''}" data-mode="input">
+                    <span class="mode-emoji">⌨️</span>
+                    <span class="mode-text">Напиши ответ</span>
+                    <span class="mode-desc">Введи правильный ответ вручную</span>
+                  </button>
+                </div>
+              </div>
+
+              <button class="start-btn">Начать игру! 🚀</button>
+              <button class="random-btn">🎲 Random режим</button>
+              <button class="reset-btn">🗑️ Сбросить весь прогресс</button>
+            </div>
+          </div>
+        `;
+      }
+
+      renderGame() {
+        let gameContent;
+        if (this.gameConfig.mode === 'choice') {
+          gameContent = `
+            <div class="options">
+              ${this.options.map(option => `
+                <button class="option-btn ${this.answered && option === this.question.answer ? 'correct' : ''} ${this.answered && option !== this.question.answer && option === parseInt(this.userAnswer || 0) ? 'incorrect' : ''}"
+                        data-answer="${option}"
+                        ${this.answered ? 'disabled' : ''}>
+                  ${option}
+                </button>
+              `).join('')}
+            </div>
+          `;
+        } else {
+          gameContent = `
+            <div class="input-mode">
+              <input type="number" class="answer-input" value="${this.userAnswer}" placeholder="Введи ответ..." ${this.answered ? 'disabled' : ''}>
+              <button class="submit-btn" ${this.answered || !this.userAnswer ? 'disabled' : ''}>Проверить</button>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="game-screen">
+            <div class="game-header">
+              <div class="game-info">Вопрос ${this.currentQuestion + 1}/${this.gameConfig.questionCount}</div>
+              <div class="game-score">Очки: <strong>${this.score}</strong></div>
+              <button class="exit-btn">Выйти</button>
+            </div>
+
+            ${this.gameConfig.timeLimit ? `
+              <div class="timer-display">
+                <div class="timer-text">${this.timeLeft}s</div>
+                <div class="timer-bar">
+                  <div class="timer-bar-fill ${this.timeLeft <= 3 && this.timeLeft > 0 ? 'warning' : ''}" style="width: ${(this.timeLeft / this.gameConfig.timeLimit) * 100}%"></div>
+                </div>
+              </div>
+            ` : ''}
+
+            <div class="question-card">
+              <div class="question-text">${this.question.a} × ${this.question.b} = ?</div>
+              ${gameContent}
+              ${this.feedbackMessage ? `<div class="feedback ${this.feedbackMessage.includes('Молодец') ? 'correct' : 'incorrect'}">${this.feedbackMessage}</div>` : ''}
+            </div>
+
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: ${((this.currentQuestion + 1) / this.gameConfig.questionCount) * 100}%"></div>
+            </div>
+          </div>
+        `;
+      }
+
+      renderResult() {
+        const qCount = this.gameConfig_copy ? this.gameConfig_copy.questionCount : this.questionCount;
+        const percentage = qCount > 0 ? Math.round((this.correct / qCount) * 100) : 0;
+        const achievement = percentage === 100 ? '🌟 Идеально!' :
+                           percentage >= 80 ? '🎯 Отлично!' :
+                           percentage >= 60 ? '👍 Хорошо!' :
+                           percentage >= 40 ? '💪 Неплохо!' : '📚 Учись дальше!';
+
+        return `
+          <div class="result-screen">
+            <div class="result-content">
+              <h1 class="result-title">${achievement}</h1>
+              <div class="result-stats">
+                <div class="stat">
+                  <div class="stat-label">Очки</div>
+                  <div class="stat-value">${this.score}</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-label">Правильных</div>
+                  <div class="stat-value">${this.correct}/${qCount}</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-label">Процент</div>
+                  <div class="stat-value">${percentage}%</div>
+                </div>
+              </div>
+              <div class="result-bar">
+                <div class="result-bar-fill" style="width: ${percentage}%"></div>
+              </div>
+              <button class="play-again-btn">🎮 Играть ещё раз</button>
+            </div>
+          </div>
+        `;
+      }
+
+      renderStats() {
+        const ach = this.getAchievements();
+        const avgAccuracy = this.stats.totalGames > 0
+          ? Math.round(this.stats.history.reduce((s, g) => s + g.accuracy, 0) / this.stats.history.length)
+          : 0;
+
+        const tableRows = [2, 3, 4, 5, 6, 7, 8, 9].map(t => {
+          const data = this.stats.tables[t];
+          const pct = data.total > 0 ? Math.round((data.correct / data.total) * 100) : 0;
+          const color = pct >= 80 ? '#4facfe' : pct >= 50 ? '#ffa726' : '#ff6b6b';
+          return `
+            <div class="table-stat-row">
+              <div class="table-stat-label">×${t}</div>
+              <div class="table-stat-bar">
+                <div class="table-stat-fill" style="width: ${pct}%; background: ${color};"></div>
+              </div>
+              <div class="table-stat-percent" style="color: ${color};">${data.total > 0 ? pct + '%' : '—'}</div>
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <div class="stats-screen">
+            <div class="stats-content">
+              <h2>📊 Статистика</h2>
+
+              <div class="stats-overview">
+                <div class="stat">
+                  <div class="stat-label">🎮 Всего игр</div>
+                  <div class="stat-value">${this.stats.totalGames}</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-label">🏆 Всего очков</div>
+                  <div class="stat-value">${this.stats.totalScore}</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-label">⭐ Рекорд за игру</div>
+                  <div class="stat-value">${this.stats.bestScore}</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-label">🎯 Средняя точность</div>
+                  <div class="stat-value">${avgAccuracy}%</div>
+                </div>
+              </div>
+
+              <div class="stats-achievements">
+                <h3>🏅 Достижения</h3>
+                <div class="stats-ach-row">⭐ Звёзд: <strong>${ach.stars}</strong> (до алмаза: ${10 - ach.stars})</div>
+                <div class="stats-ach-row">💎 Алмазов: <strong>${ach.diamonds}</strong> (до кубка: ${10 - ach.diamonds})</div>
+                <div class="stats-ach-row">🏆 Кубков: <strong>${ach.cups}</strong></div>
+              </div>
+
+              <div class="table-stats">
+                <h3>📋 Точность по таблицам</h3>
+                ${tableRows}
+              </div>
+
+              <button class="back-btn">← Назад в меню</button>
+            </div>
+          </div>
+        `;
+      }
+
+      renderSummary() {
+        const game = this.stats.lastGame;
+        if (!game) return '';
+
+        const tableEntries = Object.entries(game.tables).filter(([_, v]) => v.total > 0);
+        const strong = tableEntries.filter(([_, v]) => v.total > 0 && (v.correct / v.total) >= 0.8);
+        const weak = tableEntries.filter(([_, v]) => v.total > 0 && (v.correct / v.total) < 0.5);
+
+        let tip = 'Ты отлично справляешься! Так держать! 🌟';
+        if (weak.length > 0) {
+          tip = `💡 Совет: потренируй таблицу на ${weak.map(([t]) => '×' + t).join(', ')}!`;
+        } else if (strong.length > 0) {
+          tip = `💡 Ты отлично знаешь: ${strong.map(([t]) => '×' + t).join(', ')}! Молодец!`;
+        }
+
+        return `
+          <div class="summary-screen">
+            <div class="summary-content">
+              <h2>📋 Прошлая игра</h2>
+              <div class="summary-score">${game.score} очков</div>
+              <div class="summary-accuracy">${game.correct}/${game.total} правильных (${game.accuracy}%)</div>
+
+              <div class="achievements-bar">${this.getAchievementsHtml()}</div>
+
+              ${strong.length > 0 ? `
+                <div class="summary-section">
+                  <h3>🟢 Сильные стороны:</h3>
+                  <div class="summary-tags">
+                    ${strong.map(([t]) => `<span class="tag strong">×${t}</span>`).join('')}
+                  </div>
+                </div>
+              ` : ''}
+
+              ${weak.length > 0 ? `
+                <div class="summary-section">
+                  <h3>🔴 Надо подтянуть:</h3>
+                  <div class="summary-tags">
+                    ${weak.map(([t]) => `<span class="tag weak">×${t}</span>`).join('')}
+                  </div>
+                </div>
+              ` : ''}
+
+              <div class="summary-tip">${tip}</div>
+
+              <button class="summary-btn">Понятно! 🚀</button>
+            </div>
+          </div>
+        `;
+      }
+
+      // === LISTENERS ===
+
+      attachMenuListeners() {
+        const editNameBtn = document.querySelector('.edit-name-btn');
+        if (editNameBtn) {
+          editNameBtn.addEventListener('click', () => this.editName());
+        }
+
+        document.querySelectorAll('[data-table]').forEach(btn => {
+          btn.addEventListener('click', () => this.toggleTable(parseInt(btn.dataset.table)));
+        });
+
+        document.querySelectorAll('[data-mode]').forEach(btn => {
+          btn.addEventListener('click', () => this.setGameMode(btn.dataset.mode));
+        });
+
+        document.querySelector('.start-btn').addEventListener('click', () => this.startGame());
+
+        const randomBtn = document.querySelector('.random-btn');
+        if (randomBtn) {
+          randomBtn.addEventListener('click', () => this.startRandomGame());
+        }
+
+        document.querySelectorAll('[data-time]').forEach(btn => {
+          btn.addEventListener('click', () => this.setTimeLimit(btn.dataset.time));
+        });
+
+        document.querySelectorAll('[data-count]').forEach(btn => {
+          btn.addEventListener('click', () => this.setQuestionCount(parseInt(btn.dataset.count)));
+        });
+
+        document.querySelector('.reset-btn').addEventListener('click', () => this.resetAchievements());
+
+        const statsBtn = document.querySelector('.stats-btn');
+        if (statsBtn) {
+          statsBtn.addEventListener('click', () => this.render('stats'));
+        }
+      }
+
+      attachGameListeners() {
+        if (this.gameConfig.mode === 'choice') {
+          document.querySelectorAll('[data-answer]').forEach(btn => {
+            btn.addEventListener('click', () => this.handleAnswerChoice(parseInt(btn.dataset.answer)));
+          });
+        } else {
+          const input = document.querySelector('.answer-input');
+          const submitBtn = document.querySelector('.submit-btn');
+          input.addEventListener('input', (e) => {
+            this.userAnswer = e.target.value;
+            submitBtn.disabled = !this.userAnswer;
+          });
+          input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !this.answered && this.userAnswer) {
+              this.handleAnswerInput();
+            }
+          });
+          submitBtn.addEventListener('click', () => this.handleAnswerInput());
+        }
+
+        const exitBtn = document.querySelector('.exit-btn');
+        if (exitBtn) {
+          exitBtn.addEventListener('click', () => this.exitGame());
+        }
+      }
+
+      attachResultListeners() {
+        document.querySelector('.play-again-btn').addEventListener('click', () => this.backToMenu());
+      }
+
+      attachStatsListeners() {
+        document.querySelector('.back-btn').addEventListener('click', () => this.render('menu'));
+      }
+
+      attachSummaryListeners() {
+        document.querySelector('.summary-btn').addEventListener('click', () => this.render('menu'));
+      }
+    }
+
+    const game = new MultiplicationGame();
+
+    // Service Worker registration for PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
+  </script>
+</body>
+</html>
