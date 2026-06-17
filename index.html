@@ -48,22 +48,22 @@
 
     .menu-content {
       background: white;
-      border-radius: 30px;
-      padding: 40px;
+      border-radius: 25px;
+      padding: 20px 18px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
       text-align: center;
       width: 100%;
     }
 
     .menu-content h1 {
-      font-size: 48px;
+      font-size: 32px;
       margin-bottom: 10px;
       color: #667eea;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .subtitle {
-      font-size: 20px;
+      font-size: 14px;
       color: #666;
       margin-bottom: 20px;
     }
@@ -429,15 +429,15 @@
     }
 
     .option-btn {
-      padding: 30px;
-      font-size: 28px;
+      padding: 18px;
+      font-size: 24px;
       font-weight: bold;
       border: 3px solid #ddd;
-      border-radius: 15px;
+      border-radius: 12px;
       background: white;
       color: #333;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .option-btn:hover:not(:disabled) {
@@ -642,12 +642,12 @@
     /* === Player Name Display === */
     .player-greeting {
       background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-      border-radius: 15px;
-      padding: 15px 20px;
-      font-size: 20px;
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-size: 18px;
       font-weight: bold;
       color: #444;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -752,7 +752,7 @@
     }
 
     .table-stats h3 {
-      font-size: 20px;
+      font-size: 14px;
       color: #333;
       margin-bottom: 15px;
       text-align: center;
@@ -798,7 +798,7 @@
     }
 
     .stats-achievements h3 {
-      font-size: 20px;
+      font-size: 14px;
       color: #333;
       margin-bottom: 15px;
       text-align: center;
@@ -816,7 +816,7 @@
     .back-btn {
       width: 100%;
       padding: 15px;
-      font-size: 20px;
+      font-size: 14px;
       font-weight: bold;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
@@ -839,14 +839,14 @@
     }
 
     .summary-score {
-      font-size: 48px;
+      font-size: 32px;
       font-weight: bold;
       color: #f5576c;
       margin-bottom: 5px;
     }
 
     .summary-accuracy {
-      font-size: 20px;
+      font-size: 14px;
       color: #666;
       margin-bottom: 25px;
     }
@@ -992,49 +992,76 @@
       box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
     }
 
+    /* === МОБИЛЬНАЯ ВЕРСИЯ — компактные размеры === */
     @media (max-width: 600px) {
-      .menu-content, .result-content, .stats-content, .summary-content {
-        padding: 30px 20px;
-      }
+      .menu { padding: 8px; }
+      .menu-content { padding: 14px 12px; border-radius: 18px; }
+      .menu-content h1 { font-size: 22px; margin-bottom: 4px; }
+      .subtitle { font-size: 12px; margin-bottom: 10px; }
+      .player-greeting { font-size: 14px; padding: 6px 10px; margin-bottom: 8px; }
+      .achievements-bar { gap: 8px; margin-bottom: 10px; }
+      .achievement-item { padding: 5px 10px; font-size: 20px; }
+      .achievement-item .ach-count { font-size: 16px; }
+      .max-score { padding: 8px 12px; font-size: 14px; margin-bottom: 10px; }
+      .section { margin-bottom: 12px; }
+      .section h2, .timer-section h2 { font-size: 14px; margin-bottom: 6px; }
+      .table-buttons { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+      .table-btn { padding: 8px; font-size: 16px; border-width: 2px; border-radius: 10px; }
+      .timer-buttons { gap: 6px; margin-bottom: 8px; }
+      .timer-btn { padding: 7px; font-size: 15px; border-width: 2px; border-radius: 10px; }
+      .mode-buttons { gap: 8px; }
+      .mode-btn { padding: 10px 12px; border-radius: 10px; }
+      .mode-emoji { font-size: 22px; margin-bottom: 2px; }
+      .mode-text { font-size: 15px; }
+      .mode-desc { font-size: 12px; }
+      .start-btn, .random-btn { padding: 12px; font-size: 18px; margin-top: 10px; border-radius: 12px; }
+      .reset-btn { padding: 8px; font-size: 12px; }
+      .stats-btn { padding: 8px; font-size: 14px; }
+      .menu-nav { margin-bottom: 10px; }
+      .result-content, .stats-content, .summary-content { padding: 16px 14px; border-radius: 18px; }
+      .result-title { font-size: 28px; margin-bottom: 16px; }
+      .result-stats { grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 14px; }
+      .stat { padding: 10px 6px; }
+      .stat-label { font-size: 11px; }
+      .stat-value { font-size: 18px; }
+      .result-bar { height: 16px; margin-bottom: 16px; }
+      .play-again-btn { padding: 12px; font-size: 18px; }
+      .stats-content h2, .summary-content h2 { font-size: 22px; margin-bottom: 14px; }
+      .stats-overview { grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
+      .stats-overview .stat { padding: 8px; }
+      .stats-overview .stat-value { font-size: 18px; }
+      .stats-overview .stat-label { font-size: 11px; }
+      .table-stats h3, .stats-achievements h3 { font-size: 15px; margin-bottom: 8px; }
+      .table-stat-label { font-size: 15px; min-width: 35px; }
+      .table-stat-bar { height: 18px; }
+      .table-stat-percent { font-size: 13px; min-width: 42px; }
+      .stats-ach-row { font-size: 16px; margin-bottom: 5px; }
+      .back-btn, .summary-btn { padding: 12px; font-size: 16px; }
+      .summary-score { font-size: 28px; }
+      .summary-accuracy { font-size: 14px; margin-bottom: 14px; }
+      .summary-tip { padding: 10px; font-size: 14px; }
+      .tag { padding: 5px 12px; font-size: 15px; }
+      .game-screen { padding: 8px; gap: 10px; }
+      .game-header { padding: 8px 12px; font-size: 14px; border-radius: 10px; }
+      .exit-btn { padding: 5px 10px; font-size: 14px; }
+      .timer-text { font-size: 18px; margin-bottom: 5px; }
+      .timer-bar { height: 12px; }
+      .question-card { padding: 20px 16px; border-radius: 16px; }
+      .question-text { font-size: 36px; margin-bottom: 16px; letter-spacing: 3px; }
+      .options { grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 10px; }
+      .option-btn { padding: 12px; font-size: 18px; border-width: 2px; }
+      .answer-input { padding: 12px; font-size: 22px; }
+      .submit-btn { padding: 10px; font-size: 16px; }
+      .feedback { font-size: 16px; padding: 8px; margin-top: 8px; }
+      .progress-bar { height: 8px; }
+    }
 
-      .menu-content h1 {
-        font-size: 36px;
-      }
-
-      .table-buttons {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .question-text {
-        font-size: 48px;
-      }
-
-      .options {
-        grid-template-columns: 1fr;
-      }
-
-      .option-btn {
-        padding: 20px;
-        font-size: 24px;
-      }
-
-      .answer-input {
-        padding: 15px;
-        font-size: 24px;
-      }
-
-      .result-stats {
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
-
-      .stat-value {
-        font-size: 24px;
-      }
-
-      .stats-overview {
-        grid-template-columns: 1fr;
-      }
+    /* Очень маленькие экраны */
+    @media (max-width: 380px) {
+      .menu-content h1 { font-size: 18px; }
+      .question-text { font-size: 28px; }
+      .table-btn { padding: 6px; font-size: 14px; }
+      .mode-text { font-size: 13px; }
     }
   </style>
 </head>
