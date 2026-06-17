@@ -1063,6 +1063,23 @@
       .table-btn { padding: 6px; font-size: 14px; }
       .mode-text { font-size: 13px; }
     }
+
+    /* === Author Credit === */
+    .author-credit {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      padding: 6px 8px;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.95);
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+      z-index: 10;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -1148,10 +1165,10 @@
       getAchievements() {
         const totalScore = this.stats.totalScore;
         const rawStars = Math.floor(totalScore / 500);
-        const cups = Math.floor(rawStars / 100);
-        const remaining = rawStars % 100;
-        const diamonds = Math.floor(remaining / 10);
-        const stars = remaining % 10;
+        const diamondsTotal = Math.floor(rawStars / 10);
+        const cups = Math.floor(diamondsTotal / 5);
+        const diamonds = diamondsTotal % 5;
+        const stars = rawStars % 10;
         return { stars, diamonds, cups, rawStars };
       }
 
@@ -1569,6 +1586,11 @@
           root.innerHTML = this.renderSummary();
           this.attachSummaryListeners();
         }
+
+        const authorDiv = document.createElement('div');
+        authorDiv.className = 'author-credit';
+        authorDiv.textContent = 'Автор идеи: Михаил Рогулькин';
+        root.appendChild(authorDiv);
       }
 
       renderName() {
@@ -1813,7 +1835,7 @@
               <div class="stats-achievements">
                 <h3>🏅 Достижения</h3>
                 <div class="stats-ach-row">⭐ Звёзд: <strong>${ach.stars}</strong> (до алмаза: ${10 - ach.stars})</div>
-                <div class="stats-ach-row">💎 Алмазов: <strong>${ach.diamonds}</strong> (до кубка: ${10 - ach.diamonds})</div>
+                <div class="stats-ach-row">💎 Алмазов: <strong>${ach.diamonds}</strong> (до кубка: ${5 - ach.diamonds})</div>
                 <div class="stats-ach-row">🏆 Кубков: <strong>${ach.cups}</strong></div>
               </div>
 
