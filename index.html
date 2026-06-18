@@ -1165,10 +1165,10 @@
       getAchievements() {
         const totalScore = this.stats.totalScore;
         const rawStars = Math.floor(totalScore / 500);
-        const diamondsTotal = Math.floor(rawStars / 10);
+        const diamondsTotal = Math.floor(rawStars / 5);
         const cups = Math.floor(diamondsTotal / 5);
         const diamonds = diamondsTotal % 5;
-        const stars = rawStars % 10;
+        const stars = rawStars % 5;
         return { stars, diamonds, cups, rawStars };
       }
 
@@ -1834,7 +1834,7 @@
 
               <div class="stats-achievements">
                 <h3>🏅 Достижения</h3>
-                <div class="stats-ach-row">⭐ Звёзд: <strong>${ach.stars}</strong> (до алмаза: ${10 - ach.stars})</div>
+                <div class="stats-ach-row">⭐ Звёзд: <strong>${ach.stars}</strong> (до алмаза: ${5 - ach.stars})</div>
                 <div class="stats-ach-row">💎 Алмазов: <strong>${ach.diamonds}</strong> (до кубка: ${5 - ach.diamonds})</div>
                 <div class="stats-ach-row">🏆 Кубков: <strong>${ach.cups}</strong></div>
               </div>
